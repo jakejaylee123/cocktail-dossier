@@ -10,16 +10,21 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var items: [Recipe]
 
     var body: some View {
         NavigationSplitView {
             List {
                 ForEach(items) { item in
+                    
                     NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        if let createdAt = item.createdAt {
+                            Text("Item at \(createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        } else {
+                            Text("Uncreated item")
+                        }
                     } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        Text(item.name)
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -41,7 +46,14 @@ struct ContentView: View {
 
     private func addItem() {
         withAnimation {
-            let newItem = Item(timestamp: Date())
+            let newItem = Recipe(
+                name: "",
+                createdAt: Optional.none,
+                lastUpdated: Optional.none,
+                desc: "",
+                utensils: [],
+                ingredients: [],
+                directions: [])
             modelContext.insert(newItem)
         }
     }
@@ -57,5 +69,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: Recipe.self, inMemory: true)
 }

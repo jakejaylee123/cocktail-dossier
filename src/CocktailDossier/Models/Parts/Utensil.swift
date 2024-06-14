@@ -1,5 +1,5 @@
 //
-//  Item.swift
+//  Utensil.swift
 //  CocktailDossier
 //
 //  Created by Jake Lee on 6/13/24.
@@ -9,10 +9,10 @@ import Foundation
 import SwiftData
 
 @Model
-final class Item {
-    var timestamp: Date
+public class Utensil {
+    public var name: String
     
-    init(timestamp: Date) {
-        self.timestamp = timestamp
+    init(name: String) {
+        self.name = name
     }
 }
